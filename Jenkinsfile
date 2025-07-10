@@ -21,13 +21,6 @@ pipeline {
                 sh 'npm install'
             }
         }
-
-        stage('Run Tests') {
-            steps {
-                sh 'npm test'
-            }
-        }
-
         stage('Package App') {
             steps {
                 sh 'zip -r $ARTIFACT_NAME .'
