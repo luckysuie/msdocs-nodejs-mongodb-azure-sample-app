@@ -52,14 +52,7 @@ pipeline {
                     usernamePassword(credentialsId: 'azure-sp', usernameVariable: 'AZURE_APP_ID', passwordVariable: 'AZURE_PASSWORD'),
                     string(credentialsId: 'azure-tenant', variable: 'AZURE_TENANT')
                 ]) {
-                    sh '''
-                    echo "Client ID: $AZURE_APP_ID"
-                    echo "Tenant ID: $AZURE_TENANT"
-                    az login --service-principal \
-                      -u $AZURE_APP_ID \
-                      -p $AZURE_PASSWORD \
-                      --tenant $AZURE_TENANT
-                    '''
+                    sh "az login --service-principal -u $AZURE_APP_ID -p $AZURE_PASSWORD --tenant $AZURE_TENANT"
                 }
             }
         }
@@ -67,22 +60,13 @@ pipeline {
         stage('Deploy to Azure Web App') {
             steps {
                 sh '''
-                echo "Deploying $ARTIFACT_NAME to Azure Web App: $AZURE_WEBAPP_NAME"
-                az webapp deployment source config-zip \
-                  --resource-group $AZURE_RESOURCE_GROUP \
-                  --name $AZURE_WEBAPP_NAME \
-                  --src $ARTIFACT_NAME
+                    echo "Deploying $ARTIFACT_NAME to Azure Web App: $AZURE_WEBAPP_NAME"
+                    az webapp deployment source config-zip \
+                      --resource-group $AZURE_RESOURCE_GROUP \
+                      --name $AZURE_WEBAPP_NAME \
+                      --src $ARTIFACT_NAME
                 '''
             }
-        }
-    }
-
-    post {
-        failure {
-            echo "Pipeline failed. Please check the Azure credentials, login, or deployment errors."
-        }
-        success {
-            echo "Deployment to Azure Web App was successful!"
         }
     }
 }
