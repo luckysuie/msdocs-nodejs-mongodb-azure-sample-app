@@ -24,7 +24,7 @@ pipeline {
 
         stage('Run Tests') {
             steps {
-                sh 'npm test || echo "Tests failed or not defined, continuing..."'
+                sh 'npm test'
             }
         }
 
