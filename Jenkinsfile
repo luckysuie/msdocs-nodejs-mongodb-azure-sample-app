@@ -43,7 +43,7 @@ pipeline {
                 )
             }
         }
-        Stage('login to Azure') {
+        stage('login to Azure') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'azure-sp', usernameVariable: 'AZURE_APP_ID', passwordVariable: 'AZURE_PASSWORD'),
                 string(credentialsId: 'azure-tenant', variable: 'AZURE_TENANT')])
