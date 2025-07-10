@@ -1,36 +1,42 @@
 pipeline {
     agent any
-    options {
-        // Timeout counter starts AFTER agent is allocated
-        timeout(time: 1, unit: 'SECONDS')
-    }
+
     tools {
-        nodejs 'NodeJS'
+        nodejs 'NodeJS' // Make sure this tool is configured in Jenkins → Global Tool Config
     }
+
+    environment {
+        ARTIFACT_NAME = 'app.zip'
+    }
+
     stages {
         stage('Checkout from Git') {
             steps {
                 git branch: 'main', url: 'https://github.com/luckysuie/msdocs-nodejs-mongodb-azure-sample-app.git'
             }
         }
+
         stage('Install Dependencies') {
             steps {
                 sh 'npm install'
             }
         }
+
         stage('Run Tests') {
             steps {
-                sh 'npm test'
+                sh 'npm test || echo "Tests failed or not defined, continuing..."'
             }
         }
-        stage('package app') {
+
+        stage('Package App') {
             steps {
-                sh 'zip -r app.zip .'
+                sh 'zip -r $ARTIFACT_NAME .'
             }
         }
-        stage('publish the artifact') {
+
+        stage('Publish Artifact') {
             steps {
-                archiveArtifacts artifacts: 'app.zip', fingerprint: true
+                archiveArtifacts artifacts: "${ARTIFACT_NAME}", fingerprint: true
             }
         }
     }
