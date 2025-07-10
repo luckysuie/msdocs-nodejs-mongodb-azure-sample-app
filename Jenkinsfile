@@ -28,7 +28,7 @@ pipeline {
                 sh 'zip -r app.zip .'
             }
         }
-        stagge('publish the artifact') {
+        stage('publish the artifact') {
             steps {
                 archiveArtifacts artifacts: 'app.zip', fingerprint: true
             }
