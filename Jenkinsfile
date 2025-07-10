@@ -39,7 +39,7 @@ pipeline {
                 copyArtifacts(
                     projectName: 'pipeline11',
                     filter: ARTIFACT_NAME,
-                    fingerprintArtifacts: true,
+                    fingerprintArtifacts: true
                 )
             }
         }
