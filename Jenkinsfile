@@ -45,8 +45,8 @@ pipeline {
         }
         Stage('login to Azure') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'azure-sp', usernameVariable: 'AZURE_APP_ID', passwordVariable: 'AZURE_PASSWORD')
-                sting credentialsId = 'azure-tenant', variable: 'AZURE_TENANT'])
+                withCredentials([usernamePassword(credentialsId: 'azure-sp', usernameVariable: 'AZURE_APP_ID', passwordVariable: 'AZURE_PASSWORD'),
+                string(credentialsId: 'azure-tenant', variable: 'AZURE_TENANT')])
                 {
                     sh 'az login --service-principal -u $AZURE_APP_ID -p $AZURE_PASSWORD --tenant $AZURE_TENANT'
                 }
